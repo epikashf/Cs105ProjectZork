@@ -6,10 +6,10 @@ print("Welcome to Hilles Hall where you have Python for lunch and Java for Dinne
 print("You have been programming all night upstairs and you've been locked up")
 print("You are looking for keys to get out of the Lab H204")
 
-
-while True:
-    user = input("Press any key to continue")
-    user = input("Enter Up, Down, Left or Right to move around")
+def user_int():
+        while True:
+            user = input("Press any key to continue")
+            user_input = input("Enter Up, Down, Left or Right to move around")
 
 
 
