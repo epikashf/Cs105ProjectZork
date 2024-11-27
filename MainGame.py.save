@@ -1,0 +1,26 @@
+# print("Hello there!")
+# print("Welcome to Hilles Hall where you have Python for lunch and Java for Dinner")
+# print("You have been programming all night upstairs and you've been locked up")
+# print("You are looking for keys to get out of the library")
+# user = input("Enter Up, Down, Left or Right to move around")
+
+from asciimatics.effects import Cycle, Stars
+from asciimatics.renderers import FigletText
+from asciimatics.scene import Scene
+from asciimatics.screen import Screen
+
+def demo(screen):
+    effects = [
+        Cycle(
+            screen,
+            FigletText("HILLES", font='big'),
+            int(screen.height / 2 - 8)),
+        Cycle(
+            screen,
+            FigletText("ROCKS!", font='big'),
+            int(screen.height / 2 + 3)),
+        Stars(screen, 200)
+    ]
+    screen.play([Scene(effects, 500)])
+
+Screen.wrapper(demo)
