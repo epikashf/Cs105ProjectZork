@@ -1,21 +1,24 @@
 from LoadMapsDict import coordinates
-from MainGame import user_int
 
 
 def current_location():
     current = coordinates[(4, 0)]
-    if user_input.lower == "west", "w", "left", 'l':
-        current = go_west() v
+
+    if user_response.lower == "west" or "w" or "left" or 'l':
+        current = go_west()
+        return current
 
 
-    if user_input.lower == "east", "e", "right", 'r':
+
+    if user_response.lower == "east" or "e" or "right" or 'r':
         current = go_east()
+        return current
 
-
-    if user_input.lower == "north", "n", "up", 'u':
+    if user_response.lower == "north" or "n" or "up" or'u':
         current = go_north()
+        return current
 
-    if user_input.lower == "south", "s", "down", 'd':
+    if user_response.lower == "south" or "s" or "down" or 'd':
         current = go_south()
 
         return current
@@ -23,7 +26,8 @@ def current_location():
 
 
 def go_west():
-    current_location() #x-1
+    coordinates[(x - 1, y)]
+    current_location()
 
 
 def go_east():
