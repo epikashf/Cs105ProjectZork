@@ -1,24 +1,52 @@
 from map import *
 from functions import *
 from stats import *
+from savefile import *
 
 # Player starting position
 
 
 # game loop using these functions
 def game_loop():
-    p1 = Player()
-    """Main game loop."""
     print("Welcome to the game!")
-    print("Whats your name?")
-    p1.name = input(">")
-    print("Type 'north', 'south', 'east', or 'west' to move.")
-    print("Type 'quit' to exit the game.")
+    filename = None
+
+    choice = input("Do you want to start a new game or load a saved game? (new/load): ").strip().lower()
+
+    if choice == "load":
+        saved_games = list_saved_games()
+
+        if saved_games:
+            game_choice = int(input("Enter the number of the game you want to load: ")) - 1
+            if 0 <= game_choice < len(saved_games):
+                game_file = saved_games[game_choice]
+                loaded_game_state = load_game(game_file)
+                if loaded_game_state:
+                    p1 = Player()  # Initialize player with default values
+                    apply_game_state(p1, loaded_game_state)  # Apply saved state
+                    print(f"Game '{game_file}' loaded successfully!")
+                    print(f"Welcome back {p1.name}!")
+                else:
+                    print("Error loading the selected game.")
+                    p1 = start_new_game()  # In case something went wrong, start a new game
+            else:
+                print("Invalid choice. Starting a new game.")
+                p1 = start_new_game()
+        else:
+            print("No saved games found. Starting a new game.")
+            p1 = start_new_game()  # If no saved games, start a new game
+    else:
+        p1 = start_new_game()
+
 
     while True:
         global mapdisplay
         current = x, y
         mapdisplay = update_map(mapdisplay, current, visited)
+
+
+        print("Type 'north', 'south', 'east', or 'west' to move.")
+        print("Type 'quit' to exit the game.")
 
         user_input = input("> ").strip().lower()
 
@@ -37,8 +65,19 @@ def game_loop():
             go_west()
         elif user_input == "stats":
             p1.show_stats()
+        elif user_input == "save":
+            if filename:
+                save_game(p1, filename)
         elif user_input == "quit":
-            print("Thanks for playing!")
+            save_choice = input("Do you want to save your game? (yes/no): ").strip().lower()
+            if save_choice == "yes":
+                if filename:  # Overwrite the existing file
+                    save_game(p1, filename)
+                else:
+                    filename = input("Enter a filename to save your game (e.g., 'game_1.json'): ").strip()
+                    filename = "game_" + filename + ".json"
+                    save_game(p1, filename)  # Save the game with a custom filename
+            print("Thanks for playing! Goodbye!")
             break
         else:
             print("Invalid input! Try again.")
