@@ -16,7 +16,6 @@ def save_game(player, filename="game_save.json"):
 
 
 
-
 # Loading the game state from a file (example with JSON)
 def load_game(filename="game_save.json"):
     try:
@@ -34,7 +33,6 @@ def apply_game_state(player, game_state):
         player.health = game_state.get("health", player.health)  # Default to current health if not found
         player.x = game_state.get("position_x", player.x)
         player.y = game_state.get("position_y", player.y)  # Default to current position if not found
-        # Default to current position if not found
         player.inventory = game_state.get("inventory", player.inventory)
 
 
@@ -47,7 +45,10 @@ def start_new_game():
 
 
 def list_saved_games():
-    saved_games = [f for f in os.listdir() if f.startswith("game_") and f.endswith(".json")]
+    saved_games = []
+    for f in os.listdir():
+        if f.startswith("game_") and f.endswith(".json"):
+            saved_games.append(f)
     if saved_games:
         print("Saved games:")
         for idx, game in enumerate(saved_games, 1):

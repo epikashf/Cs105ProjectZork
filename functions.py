@@ -36,16 +36,13 @@ def update_map(map, current, visited):
 
 
 def current_place(player):
-    """Returns the player's current location."""
     return f"({player.x}, {player.y})"
 
 def goal_reached(player) -> bool:
-    """Checks if the player has reached the goal location."""
     goal_x, goal_y = 4, 10
     return (player.x, player.y) == (goal_x, goal_y)
 
 def onecard(player) -> bool:
-    """Checks if the player has reached the goal location."""
     onecard_x, onecard_y = 5, 2
     global onecard_found
     if (player.x, player.y) == (onecard_x, onecard_y) and not onecard_found:
@@ -55,7 +52,6 @@ def onecard(player) -> bool:
         return False
 
 def hilleskey(player) -> bool:
-    """Checks if the player has reached the goal location."""
     hilleskey_x, hilleskey_y = 9, 2
     global keys_found
     if (player.x, player.y) == (hilleskey_x, hilleskey_y) and not keys_found:
@@ -65,7 +61,6 @@ def hilleskey(player) -> bool:
         return False
 
 def hersheys(player) -> bool:
-    """Checks if the player has reached the goal location."""
     hersheys_x, hersheys_y = 5, 3
     global hersheys_found
     if (player.x, player.y) == (hersheys_x, hersheys_y) and not hersheys_found:
@@ -83,24 +78,19 @@ def reset_visited():
 
 # Movement check functions
 def can_go_north(currentmap, player) -> bool:
-    """Checks if the player can move north."""
     return min_y < player.y and currentmap.get((player.x, player.y - 1), 1) == 1
 
 def can_go_south(currentmap,player) -> bool:
-    """Checks if the player can move south."""
     return player.y < max_y and currentmap.get((player.x, player.y + 1), 1) == 1
 
 def can_go_east(currentmap, player) -> bool:
-    """Checks if the player can move east."""
     return player.x < max_x and currentmap.get((player.x + 1, player.y), 1) == 1
 
 def can_go_west(currentmap, player) -> bool:
-    """Checks if the player can move west."""
     return min_x < player.x and currentmap.get((player.x - 1, player.y), 1) == 1
 
 # Movement actions
 def go_north(currentmap, player):
-    """Moves the player north if possible."""
     if can_go_north(currentmap, player):
         visited.add((player.x, player.y))
         player.y -= 1
@@ -109,34 +99,28 @@ def go_north(currentmap, player):
         print("You can't go north!")
 
 def go_south(currentmap, player):
-    """Moves the player south if possible."""
     if can_go_south(currentmap, player):
         visited.add((player.x, player.y))
         player.y += 1
         print(f"You moved south to {current_place(player)}")
-        #modify_map(mapdisplay, y, x, "_")
 
     else:
         print("You can't go south!")
 
 def go_east(currentmap, player):
-    """Moves the player east if possible."""
     if can_go_east(currentmap, player):
         visited.add((player.x, player.y))
         player.x += 1
         print(f"You moved east to {current_place(player)}")
-        #modify_map(mapdisplay, y, x, "_")
 
     else:
         print("You can't go east!")
 
 def go_west(currentmap, player):
-    """Moves the player west if possible."""
     if can_go_west(currentmap, player):
         visited.add((player.x, player.y))
         player.x -= 1
         print(f"You moved west to {current_place(player)}")
-        #modify_map(mapdisplay, y, x, "_")
 
     else:
         print("You can't go west!")
@@ -186,10 +170,7 @@ class Player:
         print(stats)
 
     def modify_health(self, amount: int):
-        """
-        Modify the player's health.
-        :param amount: Amount to adjust health (positive to heal, negative to damage).
-        """
+
         self.health += amount
         self.health = max(0, self.health)  # Ensure health doesn't drop below 0
         if self.health == 0:
@@ -200,18 +181,12 @@ class Player:
             print(f"{self.name} lost {abs(amount)} health!")
 
     def take_damage(self, damage: int):
-        """
-        Subtract health from the player when attacked.
-        :param damage: Amount of damage to deal to the player.
-        """
+
         print(f"{self.name} was attacked and lost {damage} health!")
         self.modify_health(-damage)
 
     def add_item(self, item: str):
-        """
-        Add an item to the player's inventory and adjust health if applicable.
-        :param item: The item to add.
-        """
+
         self.inventory.append(item)
         print(f"{item} added to inventory.")
 
@@ -220,9 +195,7 @@ class Player:
             self.modify_health(20)  # Healing item
 
     def check_inventory(self):
-        """
-        Display the player's inventory.
-        """
+
         inventory = ", ".join(self.inventory) if self.inventory else "Empty"
         print(f"Inventory: {inventory}")
 

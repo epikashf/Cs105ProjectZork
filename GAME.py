@@ -99,12 +99,10 @@ def game_loop():
                     print("You have a key now!")
                     p1.add_item("Hilles Key")
                     continue
-                    #Append key to inventory
 
                 if onecard(p1):
                     print("You found your One Card!")
                     p1.add_item("One Card")
-                    #Append one card to inventory
                     continue
 
                 if hersheys(p1):
