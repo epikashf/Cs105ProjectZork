@@ -54,8 +54,7 @@ def game_loop():
             currentdisplay = update_map(currentdisplay, current, visited)
             mapdisplays[map_index] = currentdisplay
             print_map(currentdisplay)
-            print("Type 'north', 'south', 'east', or 'west' to move.")
-            print("Type 'quit' to exit the game.")
+
 
             user_input = input("> ").strip().lower()
 

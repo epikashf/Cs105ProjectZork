@@ -41,6 +41,9 @@ def start_new_game():
     print("Starting a new game...")
     print("Whats your name?")
     p1.name = input("> ")
+    print("Welcome to Hilles Hall where you have Python for lunch and Java for Dinner")
+    print("You have been programming all night upstairs and you've been locked up")
+    print("You are looking for keys to get out of the Lab H204")
     return p1
 
 

@@ -18,3 +18,7 @@ def loadMap(filename: str) -> list:
 map_1 = loadMap('map1.txt')
 map_2 = loadMap("map2.txt")
 map_3 = loadMap("map3.txt")
+
+
+
+
