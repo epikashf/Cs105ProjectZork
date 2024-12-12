@@ -3,8 +3,8 @@ from functions import *
 from stats import *
 from savefile import *
 
-# Player starting position
 
+# Player starting position
 
 # game loop using these functions
 def game_loop():
@@ -45,9 +45,12 @@ def game_loop():
     for map_index in range(len(maps)): # Loop through all maps
         currentmap = maps[map_index]
         currentdisplay = mapdisplays[map_index]
-        current = p1.x, p1.y
+        p1.reset_position()
+        reset_visited()
 
         while True:
+            current = p1.x, p1.y
+
             currentdisplay = update_map(currentdisplay, current, visited)
             mapdisplays[map_index] = currentdisplay
 
@@ -124,3 +127,4 @@ def game_loop():
 
 # Run the game
 game_loop()
+

@@ -1,6 +1,7 @@
 from map import *
 from loadmap import *
 from dataclasses import dataclass, field
+from savefile import start_new_game
 
 max_x, max_y, min_x, min_y = 10, 10, 1, 1
 
@@ -74,8 +75,9 @@ def hersheys() -> bool:
         return False
 
 
-
-
+def reset_visited():
+    global visited
+    visited.clear()
 
 
 
@@ -159,6 +161,11 @@ class Player:
     inventory: list = field(default_factory=list) # Empty inventory at the start
     x: int = 1  # Initial position on the map
     y: int = 1
+
+    def reset_position(self):
+        self.x = 1
+        self.y = 1  # Reset to default position
+
     def show_stats(self):
 
         stats = f"""
