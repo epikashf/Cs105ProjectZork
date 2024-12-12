@@ -8,6 +8,10 @@ from savefile import *
 
 # game loop using these functions
 def game_loop():
+
+    # Track the current map index
+    maps = [map_1, map_2, map_3] # List of maps
+    mapdisplays = [map_1display, map_2display, map_3display]
     print("Welcome to the game!")
     filename = None
 
@@ -38,76 +42,84 @@ def game_loop():
     else:
         p1 = start_new_game()
 
+    for map_index in range(len(maps)): # Loop through all maps
+        currentmap = maps[map_index]
+        currentdisplay = mapdisplays[map_index]
+        current = p1.x, p1.y
 
-    while True:
-        global mapdisplay
-        current = x, y
-        mapdisplay = update_map(mapdisplay, current, visited)
+        while True:
+            currentdisplay = update_map(currentdisplay, current, visited)
+            mapdisplays[map_index] = currentdisplay
 
+            print_map(currentdisplay)
+            print("Type 'north', 'south', 'east', or 'west' to move.")
+            print("Type 'quit' to exit the game.")
 
-        print("Type 'north', 'south', 'east', or 'west' to move.")
-        print("Type 'quit' to exit the game.")
+            user_input = input("> ").strip().lower()
 
-        user_input = input("> ").strip().lower()
-
-        if user_input == "current":
-            print(current_place())
-        elif user_input == "map":
-            print("Here is the map:")
-            print_map(mapdisplay)
-        elif user_input in ["north", "n", "up", "u"]:
-            go_north()
-        elif user_input in ["south", "s", "down", "d"]:
-            go_south()
-        elif user_input in ["east", "e", "right", "r"]:
-            go_east()
-        elif user_input in ["west", "w", "left", "l"]:
-            go_west()
-        elif user_input == "stats":
-            p1.show_stats()
-        elif user_input == "save":
-            if filename:
-                save_game(p1, filename)
-        elif user_input == "quit":
-            save_choice = input("Do you want to save your game? (yes/no): ").strip().lower()
-            if save_choice == "yes":
-                if filename:  # Overwrite the existing file
+            if user_input == "current":
+                print(current_place())
+            elif user_input in ["north", "n", "up", "u"]:
+                go_north(currentmap)
+            elif user_input in ["south", "s", "down", "d"]:
+                go_south(currentmap)
+            elif user_input in ["east", "e", "right", "r"]:
+                go_east(currentmap)
+            elif user_input in ["west", "w", "left", "l"]:
+                go_west(currentmap)
+            elif user_input == "stats":
+                p1.show_stats()
+            elif user_input == "save":
+                if filename:
                     save_game(p1, filename)
-                else:
-                    filename = input("Enter a filename to save your game (e.g., 'game_1.json'): ").strip()
-                    filename = "game_" + filename + ".json"
-                    save_game(p1, filename)  # Save the game with a custom filename
-            print("Thanks for playing! Goodbye!")
-            break
-        else:
-            print("Invalid input! Try again.")
+            elif user_input == "quit":
+                save_choice = input("Do you want to save your game? (yes/no): ").strip().lower()
+                if save_choice == "yes":
+                    if filename:  # Overwrite the existing file
+                        save_game(p1, filename)
+                    else:
+                        filename = input("Enter a filename to save your game (e.g., 'game_1.json'): ").strip()
+                        filename = "game_" + filename + ".json"
+                        save_game(p1, filename)  # Save the game with a custom filename
+                print("Thanks for playing! Goodbye!")
+                break
+            else:
+                print("Invalid input! Try again.")
 
 
-        # Check for goal
-        if goal_reached():
-            print("Congratulations! You've reached the goal!")
-            break
+            # Check for goal
+            if goal_reached():
+                print("Congratulations! You've ")
+                break
 
-        if hilleskey():
-            print("You have a key now!")
-            p1.add_item("Hilles Key")
-            continue
-            #Append key to inventory
+            if currentmap == map_1:
+                if hilleskey():
+                    print("You have a key now!")
+                    p1.add_item("Hilles Key")
+                    continue
+                    #Append key to inventory
 
-        if onecard():
-            print("You found your One Card!")
-            p1.add_item("One Card")
-            #Append one card to inventory
-            continue
+                if onecard():
+                    print("You found your One Card!")
+                    p1.add_item("One Card")
+                    #Append one card to inventory
+                    continue
 
-        if hersheys():
-            print("You found Hersheys and you ate it!")
-            print("Health +10")
-            p1.modify_health(10)
-            continue
+                if hersheys():
+                    print("You found Hersheys and you ate it!")
+                    print("Health +10")
+                    p1.modify_health(10)
+                    continue
 
-        if linux_cat_game():
-            battle(p1.health, focal_fossa)
+ #               if linux_cat_game():
+  #                  battle(p1.health, focal_fossa)
+   #                 continue
+
+            if currentmap == map_2:
+                pass
+            if currentmap == map_3:
+                pass
+
 
 
 # Run the game
