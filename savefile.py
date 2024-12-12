@@ -1,12 +1,14 @@
 import json
 import os
 from functions import *
+from functions import Player
 
 def save_game(player, filename="game_save.json"):
     game_state = {
         "name": player.name,
         "health": player.health,
-        "position": player.position,
+        "position_x": player.x,
+        "position_y": player.y,
         "inventory": player.inventory
     }
     with open(filename, 'w') as file:
@@ -30,7 +32,9 @@ def apply_game_state(player, game_state):
     if game_state:
         player.name = game_state.get("name", player.name)
         player.health = game_state.get("health", player.health)  # Default to current health if not found
-        player.position = game_state.get("position", player.position)  # Default to current position if not found
+        player.x = game_state.get("position_x", player.x)
+        player.y = game_state.get("position_y", player.y)  # Default to current position if not found
+        # Default to current position if not found
         player.inventory = game_state.get("inventory", player.inventory)
 
 
@@ -38,7 +42,7 @@ def start_new_game():
     p1 = Player()  # Initialize player with default health and position
     print("Starting a new game...")
     print("Whats your name?")
-    p1.name = input(">")
+    p1.name = input("> ")
     return p1
 
 

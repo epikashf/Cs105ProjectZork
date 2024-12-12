@@ -2,6 +2,8 @@ def loadMap(filename: str) -> list:
 
     with open(filename, 'r') as file:
         lines = file.readlines()
+
+
     mp = []
     for line in range(1, len(lines)):
         lines[line] = str(lines[line]).strip("\n")

@@ -1,4 +1,4 @@
-from map import *
+from mapdisplay import *
 from functions import *
 from stats import *
 from savefile import *
@@ -53,7 +53,6 @@ def game_loop():
 
             currentdisplay = update_map(currentdisplay, current, visited)
             mapdisplays[map_index] = currentdisplay
-
             print_map(currentdisplay)
             print("Type 'north', 'south', 'east', or 'west' to move.")
             print("Type 'quit' to exit the game.")
@@ -61,15 +60,15 @@ def game_loop():
             user_input = input("> ").strip().lower()
 
             if user_input == "current":
-                print(current_place())
+                print(current_place(p1))
             elif user_input in ["north", "n", "up", "u"]:
-                go_north(currentmap)
+                go_north(currentmap, p1)
             elif user_input in ["south", "s", "down", "d"]:
-                go_south(currentmap)
+                go_south(currentmap, p1)
             elif user_input in ["east", "e", "right", "r"]:
-                go_east(currentmap)
+                go_east(currentmap, p1)
             elif user_input in ["west", "w", "left", "l"]:
-                go_west(currentmap)
+                go_west(currentmap, p1)
             elif user_input == "stats":
                 p1.show_stats()
             elif user_input == "save":
@@ -85,46 +84,58 @@ def game_loop():
                         filename = "game_" + filename + ".json"
                         save_game(p1, filename)  # Save the game with a custom filename
                 print("Thanks for playing! Goodbye!")
-                break
+                exit
             else:
                 print("Invalid input! Try again.")
 
 
             # Check for goal
-            if goal_reached():
-                print("Congratulations! You've ")
-                break
+            if goal_reached(p1):
+                print("Congratulations! You've reached your goal!")
+
 
             if currentmap == map_1:
-                if hilleskey():
+                if hilleskey(p1):
                     print("You have a key now!")
                     p1.add_item("Hilles Key")
                     continue
                     #Append key to inventory
 
-                if onecard():
+                if onecard(p1):
                     print("You found your One Card!")
                     p1.add_item("One Card")
                     #Append one card to inventory
                     continue
 
-                if hersheys():
+                if hersheys(p1):
                     print("You found Hersheys and you ate it!")
                     print("Health +10")
                     p1.modify_health(10)
                     continue
 
- #               if linux_cat_game():
-  #                  battle(p1.health, focal_fossa)
-   #                 continue
+                if linux_cat_game(p1):
+                    battlemap1(p1.health, focal_fossa)
+                    continue
 
             if currentmap == map_2:
-                pass
+
+                if linux_cat_gamemap2(p1):
+                    focal_fossa_battlemap2(p1.health)
+                    continue
+
             if currentmap == map_3:
                 pass
 
 
-
+            if currentmap == map_1 and goal_reached(p1):
+                print("Map 1 completed! Moving to Map 2.")
+                break
+            if currentmap == map_2 and goal_reached(p1):
+                print("Map 2 completed! Moving to Map 3.")
+                break
+            if currentmap == map_3 and goal_reached(p1):
+                print("Map 3 completed! Congratulations!")
+                break
 # Run the game
 game_loop()
 

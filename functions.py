@@ -1,7 +1,6 @@
-from map import *
+from mapdisplay import *
 from loadmap import *
 from dataclasses import dataclass, field
-from savefile import start_new_game
 
 max_x, max_y, min_x, min_y = 10, 10, 1, 1
 
@@ -9,6 +8,7 @@ hersheys_found = False
 onecard_found = False
 keys_found = False
 focaldead = False
+focaldeadmap2 = False
 visited = set()
 
 
@@ -18,7 +18,7 @@ def print_map(map):
     for row in map:
         print(row)
 def update_map(map, current, visited):
-    current = p1.x, p1.y
+
     # Create a new map display with updates for visited and current positions
     updated_map = []
     for row_idex, row in enumerate(map, start=1):
@@ -35,40 +35,40 @@ def update_map(map, current, visited):
     return updated_map
 
 
-def current_place():
+def current_place(player):
     """Returns the player's current location."""
-    return f"({p1.x}, {p1.y})"
+    return f"({player.x}, {player.y})"
 
-def goal_reached() -> bool:
+def goal_reached(player) -> bool:
     """Checks if the player has reached the goal location."""
     goal_x, goal_y = 4, 10
-    return (p1.x, p1.y) == (goal_x, goal_y)
+    return (player.x, player.y) == (goal_x, goal_y)
 
-def onecard() -> bool:
+def onecard(player) -> bool:
     """Checks if the player has reached the goal location."""
     onecard_x, onecard_y = 5, 2
     global onecard_found
-    if (p1.x, p1.y) == (onecard_x, onecard_y) and not onecard_found:
+    if (player.x, player.y) == (onecard_x, onecard_y) and not onecard_found:
         onecard_found = True
         return True
     else:
         return False
 
-def hilleskey() -> bool:
+def hilleskey(player) -> bool:
     """Checks if the player has reached the goal location."""
     hilleskey_x, hilleskey_y = 9, 2
     global keys_found
-    if (p1.x, p1.y) == (hilleskey_x, hilleskey_y) and not keys_found:
+    if (player.x, player.y) == (hilleskey_x, hilleskey_y) and not keys_found:
         keys_found = True
         return True
     else:
         return False
 
-def hersheys() -> bool:
+def hersheys(player) -> bool:
     """Checks if the player has reached the goal location."""
     hersheys_x, hersheys_y = 5, 3
     global hersheys_found
-    if (p1.x, p1.y) == (hersheys_x, hersheys_y) and not hersheys_found:
+    if (player.x, player.y) == (hersheys_x, hersheys_y) and not hersheys_found:
         hersheys_found = True
         return True
     else:
@@ -82,75 +82,84 @@ def reset_visited():
 
 
 # Movement check functions
-def can_go_north(currentmap) -> bool:
+def can_go_north(currentmap, player) -> bool:
     """Checks if the player can move north."""
-    return min_y < p1.y and currentmap.get((p1.x, p1.y - 1), 1) == 1
+    return min_y < player.y and currentmap.get((player.x, player.y - 1), 1) == 1
 
-def can_go_south(currentmap) -> bool:
+def can_go_south(currentmap,player) -> bool:
     """Checks if the player can move south."""
-    return p1.y < max_y and currentmap.get((p1.x, p1.y + 1), 1) == 1
+    return player.y < max_y and currentmap.get((player.x, player.y + 1), 1) == 1
 
-def can_go_east(currentmap) -> bool:
+def can_go_east(currentmap, player) -> bool:
     """Checks if the player can move east."""
-    return p1.x < max_x and currentmap.get((p1.x + 1, p1.y), 1) == 1
+    return player.x < max_x and currentmap.get((player.x + 1, player.y), 1) == 1
 
-def can_go_west(currentmap) -> bool:
+def can_go_west(currentmap, player) -> bool:
     """Checks if the player can move west."""
-    return min_x < p1.x and currentmap.get((p1.x - 1, p1.y), 1) == 1
+    return min_x < player.x and currentmap.get((player.x - 1, player.y), 1) == 1
 
 # Movement actions
-def go_north(currentmap):
+def go_north(currentmap, player):
     """Moves the player north if possible."""
-    if can_go_north(currentmap):
-        visited.add((p1.x, p1.y))
-        p1.y -= 1
-        print(f"You moved north to {current_place()}")
+    if can_go_north(currentmap, player):
+        visited.add((player.x, player.y))
+        player.y -= 1
+        print(f"You moved north to {current_place(player)}")
     else:
         print("You can't go north!")
 
-def go_south(currentmap):
+def go_south(currentmap, player):
     """Moves the player south if possible."""
-    if can_go_south(currentmap):
-        visited.add((p1.x, p1.y))
-        p1.y += 1
-        print(f"You moved south to {current_place()}")
+    if can_go_south(currentmap, player):
+        visited.add((player.x, player.y))
+        player.y += 1
+        print(f"You moved south to {current_place(player)}")
         #modify_map(mapdisplay, y, x, "_")
 
     else:
         print("You can't go south!")
 
-def go_east(currentmap):
+def go_east(currentmap, player):
     """Moves the player east if possible."""
-    if can_go_east(currentmap):
-        visited.add((p1.x, p1.y))
-        p1.x += 1
-        print(f"You moved east to {current_place()}")
+    if can_go_east(currentmap, player):
+        visited.add((player.x, player.y))
+        player.x += 1
+        print(f"You moved east to {current_place(player)}")
         #modify_map(mapdisplay, y, x, "_")
 
     else:
         print("You can't go east!")
 
-def go_west(currentmap):
+def go_west(currentmap, player):
     """Moves the player west if possible."""
-    if can_go_west(currentmap):
-        visited.add((p1.x, p1.y))
-        p1.x -= 1
-        print(f"You moved west to {current_place()}")
+    if can_go_west(currentmap, player):
+        visited.add((player.x, player.y))
+        player.x -= 1
+        print(f"You moved west to {current_place(player)}")
         #modify_map(mapdisplay, y, x, "_")
 
     else:
         print("You can't go west!")
 
 
-def linux_cat_game():
+def linux_cat_game(player):
     reach_x, reach_y = 4, 9
     global focaldead
-    if (p1.x, p1.y) == (reach_x, reach_y) and not focaldead:
+    if (player.x, player.y) == (reach_x, reach_y) and not focaldead:
         focaldead = True
         return True
     else:
         return False
 
+
+def linux_cat_gamemap2(player):
+    reach_x, reach_y = 6, 4
+    global focaldeadmap2
+    if (player.x, player.y) == (reach_x, reach_y) and not focaldeadmap2:
+        focaldeadmap2 = True
+        return True
+    else:
+        return False
 
 
 
@@ -171,7 +180,7 @@ class Player:
         stats = f"""
         Player: {self.name}
         Health: {self.health}
-        Position: {current_place()}
+        Position: {self.x, self.y}
         Inventory: {', '.join(self.inventory) if self.inventory else 'Empty'}
         """
         print(stats)
@@ -241,7 +250,7 @@ class Enemy:
 
 focal_fossa = Enemy(name="Focal Fossa", health=100)
 
-def battle(player_health, focal_fossa):
+def battlemap1(player_health, focal_fossa):
     print(
         "You were about to leave Hilles Room 204, but in front of you, Focal Fossa: the Linux cat is blocking your way.")
     print("Make sure that Focal Fossa's health goes exactly to zero. If not, you will lose!\n")
@@ -310,7 +319,7 @@ def battle(player_health, focal_fossa):
             print("Since you didn't exactly get to 0, you lose the game. Press 'r' to restart.")
             restart = input("Press 'r' to restart: ")
             if restart.lower() == 'r':
-                return battle(100, Enemy(name="Focal Fossa", health=100))
+                return battlemap1(100, Enemy(name="Focal Fossa", health=100))
             else:
                 print("You chose not to restart. Game over!")
                 break
@@ -330,12 +339,73 @@ def battle(player_health, focal_fossa):
         print("\nGame Over! Press 'r' to restart.")
         restart = input("Press 'r' to restart: ")
         if restart.lower() == 'r':
-            return battle(100, Enemy(name="Focal Fossa", health=100))
+            return battlemap1(100, Enemy(name="Focal Fossa", health=100))
         else:
             print("You chose not to restart. Game over!")
             return
 
     return player_health, focal_fossa
 
-p1 = Player()
+
+import random
+
+def focal_fossa_battlemap2(player_health):
+    print("\n--- Focal Fossa Battle ---")
+    print("Focal Fossa challenges you again! Strategically counter its attacks.")
+    print("Survive by making correct choices. Each wrong choice costs energy!")
+    print("Successfully counter 5 attacks to win, or lose if energy drops to 0.\n")
+
+    # Player resources
+    tools = {"Debugger": 2, "Firewall": 2, "Encryption Key": 2}
+    successful_counters = 0  # Tracks the number of successful defenses
+
+    # Define possible attacks and required tools
+    attack_tool_mapping = {
+        "Firewall Breach": "Firewall",
+        "Encrypted Puzzle": "Encryption Key",
+        "Corrupted Code": "Debugger",
+        "Logic Overload": "Debugger",
+        "Malware Injection": "Firewall"
+    }
+
+    # Keep playing until energy is 0 or all 5 attacks are countered
+    while player_health > 0 and successful_counters < 5:
+        # Randomly select an attack
+        attack = random.choice(list(attack_tool_mapping.keys()))
+
+        print(f"Focal Fossa uses {attack}!")
+        print("Choose a tool to counter the attack:")
+        print("1: Debugger")
+        print("2: Firewall")
+        print("3: Encryption Key")
+
+        # Player's choice
+        choice = input("Enter your choice (1, 2, or 3): ")
+        choice_mapping = {"1": "Debugger", "2": "Firewall", "3": "Encryption Key"}
+        selected_tool = choice_mapping.get(choice, None)
+
+        # Handle invalid input or depleted tools
+        if selected_tool is None:
+            print("Invalid choice! Please choose a valid tool.")
+            player_health -= 20
+        elif tools[selected_tool] == 0:
+            print(f"No uses left for {selected_tool}!")
+            player_health -= 20
+        elif selected_tool == attack_tool_mapping[attack]:
+            print(f"Well done! The {selected_tool} counters the {attack}!")
+            tools[selected_tool] -= 1
+            successful_counters += 1
+        else:
+            print(f"Wrong choice! The {attack} damages you!")
+            player_health -= 20
+
+        print(f"\n--- Current Status ---\nEnergy: {player_health}\nTools: {tools}\n")
+
+    # Determine game outcome
+    if successful_counters == 5:
+        print("Congratulations! You've successfully countered all of Focal Fossa's attacks and won!")
+    else:
+        print("You ran out of energy. Focal Fossa overwhelms you. Game over!")
+
+
 
