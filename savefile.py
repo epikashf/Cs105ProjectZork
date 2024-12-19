@@ -38,7 +38,6 @@ def apply_game_state(player, game_state):
         player.y = game_state.get("position_y", player.y)  # Default to current position if not found
         player.inventory = game_state.get("inventory", player.inventory)
 
-    return 0, set()  # Return default values if no state is found
 
 def start_new_game():
     p1 = Player()  # Initialize player with default health and position

@@ -325,8 +325,8 @@ import random
 def focal_fossa_battlemap2(player_health):
     print("\n--- Focal Fossa Battle ---")
     print("Focal Fossa challenges you again! Strategically counter its attacks.")
-    print("Survive by making correct choices. Each wrong choice costs energy!")
-    print("Successfully counter 5 attacks to win, or lose if energy drops to 0.\n")
+    print("Survive by making correct choices. Each wrong choice costs health!")
+    print("Successfully counter 5 attacks to win, or lose if health drops to 0.\n")
 
     # Player resources
     tools = {"Debugger": 2, "Firewall": 2, "Encryption Key": 2}
@@ -341,7 +341,7 @@ def focal_fossa_battlemap2(player_health):
         "Malware Injection": "Firewall"
     }
 
-    # Keep playing until energy is 0 or all 5 attacks are countered
+    # Keep playing until health is 0 or all 5 attacks are countered
     while player_health > 0 and successful_counters < 5:
         # Randomly select an attack
         attack = random.choice(list(attack_tool_mapping.keys()))
@@ -372,13 +372,20 @@ def focal_fossa_battlemap2(player_health):
             print(f"Wrong choice! The {attack} damages you!")
             player_health -= 20
 
-        print(f"\n--- Current Status ---\nEnergy: {player_health}\nTools: {tools}\n")
+        print(f"\n--- Current Status ---\nHealth: {player_health}\nTools: {tools}\n")
 
     # Determine game outcome
     if successful_counters == 5:
         print("Congratulations! You've successfully countered all of Focal Fossa's attacks and won!")
-    else:
-        print("You ran out of energy. Focal Fossa overwhelms you. Game over!")
+
+    if player_health <= 0:
+        print("You have died. Focal Fossa overwhelmed you. Game over!")
+        restart = input("Press 'r' to restart: ")
+        if restart.lower().strip() == 'r':
+            return focal_fossa_battlemap2(80)
+        else:
+            print("You chose not to restart. Game over!")
+            exit()
 
 
 

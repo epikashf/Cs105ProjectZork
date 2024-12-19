@@ -2,8 +2,6 @@ from mapdisplay import *
 from functions import *
 from stats import *
 from savefile import *
-from graphics import demo
-from asciimatics import *
 
 
 
