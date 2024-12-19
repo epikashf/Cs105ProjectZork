@@ -3,14 +3,17 @@ import os
 from functions import *
 from functions import Player
 
-def save_game(player, filename="game_save.json"):
+def save_game(player, current_map_index, visited, filename="game_save.json"):
     game_state = {
         "name": player.name,
         "health": player.health,
         "position_x": player.x,
         "position_y": player.y,
-        "inventory": player.inventory
+        "inventory": player.inventory,
+        "current_map_index": current_map_index,  # Save the current map index
+        "visited": list(visited)  # Save visited locations as a list
     }
+
     with open(filename, 'w') as file:
         json.dump(game_state, file)
 
@@ -35,6 +38,7 @@ def apply_game_state(player, game_state):
         player.y = game_state.get("position_y", player.y)  # Default to current position if not found
         player.inventory = game_state.get("inventory", player.inventory)
 
+    return 0, set()  # Return default values if no state is found
 
 def start_new_game():
     p1 = Player()  # Initialize player with default health and position
@@ -59,5 +63,4 @@ def list_saved_games():
 
         return saved_games
     else:
-        print("No saved games found.")
         return []

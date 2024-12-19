@@ -2,6 +2,10 @@ from mapdisplay import *
 from functions import *
 from stats import *
 from savefile import *
+from graphics import demo
+from asciimatics import *
+
+
 
 
 # Player starting position
@@ -9,11 +13,11 @@ from savefile import *
 # game loop using these functions
 def game_loop():
 
-    # Track the current map index
     maps = [map_1, map_2, map_3] # List of maps
     mapdisplays = [map_1display, map_2display, map_3display]
     print("Welcome to the game!")
     filename = None
+    current_map_index = 0
 
     choice = input("Do you want to start a new game or load a saved game? (new/load): ").strip().lower()
 
@@ -27,32 +31,32 @@ def game_loop():
                 loaded_game_state = load_game(game_file)
                 if loaded_game_state:
                     p1 = Player()  # Initialize player with default values
-                    apply_game_state(p1, loaded_game_state)  # Apply saved state
+                    apply_game_state(p1, loaded_game_state)
+                    filename = game_file
+                    current_map_index = loaded_game_state.get("current_map_index", 0)
                     print(f"Game '{game_file}' loaded successfully!")
                     print(f"Welcome back {p1.name}!")
                 else:
                     print("Error loading the selected game.")
                     p1 = start_new_game()  # In case something went wrong, start a new game
             else:
-                print("Invalid choice. Starting a new game.")
+                print("Invalid choice.")
                 p1 = start_new_game()
         else:
-            print("No saved games found. Starting a new game.")
+            print("No saved games found.")
             p1 = start_new_game()  # If no saved games, start a new game
     else:
         p1 = start_new_game()
 
-    for map_index in range(len(maps)): # Loop through all maps
-        currentmap = maps[map_index]
-        currentdisplay = mapdisplays[map_index]
-        p1.reset_position()
-        reset_visited()
+    while current_map_index < len(maps):  # Loop through all maps
+        currentmap = maps[current_map_index]
+        currentdisplay = mapdisplays[current_map_index]
 
         while True:
             current = p1.x, p1.y
 
             currentdisplay = update_map(currentdisplay, current, visited)
-            mapdisplays[map_index] = currentdisplay
+            mapdisplays[current_map_index] = currentdisplay
             print_map(currentdisplay)
 
 
@@ -77,13 +81,13 @@ def game_loop():
                 save_choice = input("Do you want to save your game? (yes/no): ").strip().lower()
                 if save_choice == "yes":
                     if filename:  # Overwrite the existing file
-                        save_game(p1, filename)
+                        save_game(p1, current_map_index, visited, filename)
                     else:
-                        filename = input("Enter a filename to save your game (e.g., 'game_1.json'): ").strip()
+                        filename = input("Enter a filename to save your game (e.g., 'game_1'): ").strip()
                         filename = "game_" + filename + ".json"
-                        save_game(p1, filename)  # Save the game with a custom filename
+                        save_game(p1, current_map_index, visited, filename)  # Save the game with a custom filename
                 print("Thanks for playing! Goodbye!")
-                exit
+                exit()
             else:
                 print("Invalid input! Try again.")
 
@@ -109,10 +113,10 @@ def game_loop():
                     print("Health +10")
                     p1.modify_health(10)
                     continue
-
-                if linux_cat_game(p1):
-                    battlemap1(p1.health, focal_fossa)
-                    continue
+                #
+                # if linux_cat_game(p1):
+                #     battlemap1(p1.health, focal_fossa)
+                #     continue
 
             if currentmap == map_2:
 
@@ -126,13 +130,20 @@ def game_loop():
 
             if currentmap == map_1 and goal_reached(p1):
                 print("Map 1 completed! Moving to Map 2.")
+                p1.reset_position()  # Reset position for a new game
+                reset_visited()
+                current_map_index += 1
                 break
             if currentmap == map_2 and goal_reached(p1):
                 print("Map 2 completed! Moving to Map 3.")
+                p1.reset_position()  # Reset position for a new game
+                reset_visited()
+                current_map_index += 1
                 break
             if currentmap == map_3 and goal_reached(p1):
                 print("Map 3 completed! Congratulations!")
                 break
 # Run the game
+
 game_loop()
 
