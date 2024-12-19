@@ -10,7 +10,6 @@ onecard_found = False
 keys_found = False
 focaldead = False
 focaldeadmap2 = False
-visited = set()
 
 
 
@@ -39,7 +38,7 @@ def update_map(map, current, visited):
 def current_place(player):
     return f"({player.x}, {player.y})"
 
-def goal_reached(player) -> bool:
+def goal_reachedmap1(player) -> bool:
     goal_x, goal_y = 4, 10
     if (player.x, player.y) == (goal_x, goal_y):
         if not keys_found or not onecard_found:
@@ -48,6 +47,18 @@ def goal_reached(player) -> bool:
             return False
         return True
     return False
+
+def goal_reachedmap2(player) -> bool:
+    goal_x, goal_y = 1, 10
+    return (player.x, player.y) == (goal_x, goal_y)
+
+
+
+def goal_reachedmap3(player) -> bool:
+    goal_x, goal_y = 4, 10
+    return (player.x, player.y) == (goal_x, goal_y)
+
+
 
 def onecard(player) -> bool:
     onecard_x, onecard_y = 5, 2
@@ -77,8 +88,7 @@ def hersheys(player) -> bool:
         return False
 
 
-def reset_visited():
-    global visited
+def reset_visited(visited):
     visited.clear()
 
 
@@ -97,7 +107,7 @@ def can_go_west(currentmap, player) -> bool:
     return min_x < player.x and currentmap.get((player.x - 1, player.y), 1) == 1
 
 # Movement actions
-def go_north(currentmap, player):
+def go_north(currentmap, player, visited):
     if can_go_north(currentmap, player):
         visited.add((player.x, player.y))
         player.y -= 1
@@ -105,7 +115,7 @@ def go_north(currentmap, player):
     else:
         print("You can't go north!")
 
-def go_south(currentmap, player):
+def go_south(currentmap, player, visited):
     if can_go_south(currentmap, player):
         visited.add((player.x, player.y))
         player.y += 1
@@ -114,7 +124,7 @@ def go_south(currentmap, player):
     else:
         print("You can't go south!")
 
-def go_east(currentmap, player):
+def go_east(currentmap, player, visited):
     if can_go_east(currentmap, player):
         visited.add((player.x, player.y))
         player.x += 1
@@ -123,7 +133,7 @@ def go_east(currentmap, player):
     else:
         print("You can't go east!")
 
-def go_west(currentmap, player):
+def go_west(currentmap, player, visited):
     if can_go_west(currentmap, player):
         visited.add((player.x, player.y))
         player.x -= 1
@@ -391,9 +401,16 @@ def focal_fossa_battlemap2(player_health):
     # Determine game outcome
     if successful_counters == 5:
         print("Congratulations! You've successfully countered all of Focal Fossa's attacks and won!")
-    else:
-        print("You ran out of energy. Focal Fossa overwhelms you. Game over!")
-        exit()
+
+    if player_health <= 0:
+        print("You have died. Focal Fossa overwhelmed you. Game over!")
+        restart = input("Press 'r' to restart: ")
+        if restart.lower().strip() == 'r':
+            return focal_fossa_battlemap2(80)
+        else:
+            print("You chose not to restart. Game over!")
+            exit()
+
 
 
 
