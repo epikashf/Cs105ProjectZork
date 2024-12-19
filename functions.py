@@ -1,5 +1,6 @@
 from mapdisplay import *
 from loadmap import *
+# from graphics import demo
 from dataclasses import dataclass, field
 
 max_x, max_y, min_x, min_y = 10, 10, 1, 1
@@ -40,7 +41,13 @@ def current_place(player):
 
 def goal_reached(player) -> bool:
     goal_x, goal_y = 4, 10
-    return (player.x, player.y) == (goal_x, goal_y)
+    if (player.x, player.y) == (goal_x, goal_y):
+        if not keys_found or not onecard_found:
+            print("You can't exit Map 1 without the key and the OneCard!\nGo back to"
+                  "look for what you are missing.")
+            return False
+        return True
+    return False
 
 def onecard(player) -> bool:
     onecard_x, onecard_y = 5, 2
@@ -137,7 +144,7 @@ def linux_cat_game(player):
 
 
 def linux_cat_gamemap2(player):
-    reach_x, reach_y = 6, 4
+    reach_x, reach_y = 4, 7
     global focaldeadmap2
     if (player.x, player.y) == (reach_x, reach_y) and not focaldeadmap2:
         focaldeadmap2 = True
@@ -198,9 +205,6 @@ class Player:
 
         inventory = ", ".join(self.inventory) if self.inventory else "Empty"
         print(f"Inventory: {inventory}")
-
-
-
 
 
 @dataclass
@@ -296,7 +300,7 @@ def battlemap1(player_health, focal_fossa):
             else:
                 print("You chose not to restart. Game over!")
                 break
-
+                exit()
         # Check if the health is exactly zero and the player wins
         if focal_fossa.health == 0:
             print("\nYou have defeated Focal Fossa!")
@@ -325,8 +329,8 @@ import random
 def focal_fossa_battlemap2(player_health):
     print("\n--- Focal Fossa Battle ---")
     print("Focal Fossa challenges you again! Strategically counter its attacks.")
-    print("Survive by making correct choices. Each wrong choice costs energy!")
-    print("Successfully counter 5 attacks to win, or lose if energy drops to 0.\n")
+    print("Survive by making correct choices. Each wrong or invalid choice costs energy!")
+    print("Successfully counter 5 attacks to win, or lose if energy drops to 0 :(\n")
 
     # Player resources
     tools = {"Debugger": 2, "Firewall": 2, "Encryption Key": 2}
@@ -341,10 +345,20 @@ def focal_fossa_battlemap2(player_health):
         "Malware Injection": "Firewall"
     }
 
+    # Track the count of each attack
+    attack_counts = {attack: 0 for attack in attack_tool_mapping.keys()}
+    max_attacks_per_type = 1  # Limit each attack type to appear no more than twice
+
     # Keep playing until energy is 0 or all 5 attacks are countered
     while player_health > 0 and successful_counters < 5:
-        # Randomly select an attack
-        attack = random.choice(list(attack_tool_mapping.keys()))
+        # Randomly select an attack, ensuring it hasn't been used more than twice
+        available_attacks = [attack for attack, count in attack_counts.items() if count < max_attacks_per_type]
+        if not available_attacks:
+            print("No more valid attacks left. Ending the game!")
+            break
+
+        attack = random.choice(available_attacks)
+        attack_counts[attack] += 1
 
         print(f"Focal Fossa uses {attack}!")
         print("Choose a tool to counter the attack:")
@@ -379,6 +393,7 @@ def focal_fossa_battlemap2(player_health):
         print("Congratulations! You've successfully countered all of Focal Fossa's attacks and won!")
     else:
         print("You ran out of energy. Focal Fossa overwhelms you. Game over!")
+        exit()
 
 
 

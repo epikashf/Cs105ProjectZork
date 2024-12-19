@@ -2,11 +2,8 @@ from mapdisplay import *
 from functions import *
 from stats import *
 from savefile import *
-from graphics import demo
-from asciimatics import *
-
-
-
+# from graphics import demo
+# from asciimatics import *
 
 # Player starting position
 
@@ -15,7 +12,7 @@ def game_loop():
 
     maps = [map_1, map_2, map_3] # List of maps
     mapdisplays = [map_1display, map_2display, map_3display]
-    print("Welcome to the game!")
+    print("Welcome to Hilles game!")
     filename = None
     current_map_index = 0
 
@@ -113,10 +110,10 @@ def game_loop():
                     print("Health +10")
                     p1.modify_health(10)
                     continue
-                #
-                # if linux_cat_game(p1):
-                #     battlemap1(p1.health, focal_fossa)
-                #     continue
+
+                if linux_cat_game(p1):
+                    battlemap1(p1.health, focal_fossa)
+                    continue
 
             if currentmap == map_2:
 
