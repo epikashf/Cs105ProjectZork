@@ -393,11 +393,11 @@ def focal_fossa_battlemap2(player):
 
     # Track the count of each attack
     attack_counts = {attack: 0 for attack in attack_tool_mapping.keys()}
-    max_attacks_per_type = 1  # Limit each attack type to appear no more than twice
+    max_attacks_per_type = 1  # Limit each attack type to appear no more than once
 
     # Keep playing until health is 0 or all 5 attacks are countered
     while player.health > 0 and successful_counters < 5:
-        # Randomly select an attack, ensuring it hasn't been used more than twice
+        # Randomly select an attack, ensuring it hasn't been used more than once
         available_attacks = [attack for attack, count in attack_counts.items() if count < max_attacks_per_type]
         if not available_attacks:
             print("No more valid attacks left. Ending the game!")

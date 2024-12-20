@@ -1,5 +1,5 @@
 import random
-
+from collections import deque
 
 def generate_random_maze(width, height, allowed_coordinates):
     # Create an empty grid with walls
@@ -8,10 +8,6 @@ def generate_random_maze(width, height, allowed_coordinates):
     # Starting point is at top-left corner
     start = (1, 1)
     maze[start[0]][start[1]] = 'S'
-
-    # End point is at bottom-right corner (on the opposite side)
-    end = (height - 3, width - 2)
-    maze[end[0]][end[1]] = 'E'
 
     # Convert allowed_coordinates to a set for fast lookup
     allowed_set = set(allowed_coordinates)
@@ -30,10 +26,42 @@ def generate_random_maze(width, height, allowed_coordinates):
     # Carve paths starting from the start point
     carve_paths(start[0], start[1])
 
-    # Ensure the end point is accessible
-    carve_paths(end[0], end[1])
+    # Find all reachable cells from S using BFS
+    def get_reachable_cells():
+        visited = set()
+        queue = deque([start])
+        visited.add(start)
+        while queue:
+            cx, cy = queue.popleft()
+            for dx, dy in [(0,1),(1,0),(0,-1),(-1,0)]:
+                nx, ny = cx + dx, cy + dy
+                if 0 <= nx < height and 0 <= ny < width and maze[nx][ny] in [' ', 'S']:
+                    if (nx, ny) not in visited:
+                        visited.add((nx, ny))
+                        queue.append((nx, ny))
+        return visited
 
-    return maze, start, end
+    reachable = get_reachable_cells()
+
+    # Compute distances from S to all reachable cells
+    def get_distances_from_S():
+        dist = {start: 0}
+        q = deque([start])
+        while q:
+            cx, cy = q.popleft()
+            for dx, dy in [(0,1),(1,0),(0,-1),(-1,0)]:
+                nx, ny = cx + dx, cy + dy
+                if (nx, ny) in reachable and (nx, ny) not in dist:
+                    dist[(nx, ny)] = dist[(cx, cy)] + 1
+                    q.append((nx, ny))
+        return dist
+
+    dist_map = get_distances_from_S()
+    # Select the farthest reachable cell from S as the exit
+    end_cell = max(dist_map, key=dist_map.get)
+    maze[end_cell[0]][end_cell[1]] = 'E'
+
+    return maze, start, end_cell
 
 
 # Display function to print the maze
@@ -47,7 +75,7 @@ def random_maze_game():
     print("Stage 4: Maze Challenge")
     print("You’ve entered a dark maze! Navigate from S to E to escape.")
 
-    # Maze size is 50x20
+    # Maze size
     width = 20
     height = 15
 
@@ -98,5 +126,10 @@ def random_maze_game():
 
     print("Congratulations! You've reached the exit!")
     return True  # Add return statement to indicate the stage was completed
+
+
+if __name__ == "__main__":
+    random_maze_game()
+
 
 
