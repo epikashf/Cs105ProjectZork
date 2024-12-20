@@ -100,7 +100,7 @@ def randommazemap1(player) -> bool:
     else:
         return False
 def randommazemap2(player) -> bool:
-    reach_x, reach_y = 4, 8
+    reach_x, reach_y = 1, 9
     global randommaze2
     if (player.x, player.y) == (reach_x, reach_y) and not randommaze2:
         randommaze2 = True
@@ -176,7 +176,7 @@ def linux_cat_game(player):
 
 
 def linux_cat_gamemap2(player):
-    reach_x, reach_y = 4, 7
+    reach_x, reach_y = 4, 6
     global focaldeadmap2
     if (player.x, player.y) == (reach_x, reach_y) and not focaldeadmap2:
         focaldeadmap2 = True

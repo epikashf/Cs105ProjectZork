@@ -221,9 +221,6 @@ def final_battle():
                 return
 
 
-#
-# # Run the final battle
-# if __name__ == "__main__":
-#     final_battle()
+
 
 

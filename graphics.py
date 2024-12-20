@@ -39,8 +39,13 @@ def outro_graphics(screen):
         ),
         Cycle(
             screen,
-            FigletText("Congratulations you made it back to Bryn Mawr", font='small'),
-            int(screen.height / 1.2 - 4)
+            FigletText("Congratulations", font='small'),
+            int(screen.height / 1.3 - 4),
+        ),
+        Cycle(
+            screen,
+            FigletText("you made it back to Bryn Mawr!", font='small'),
+            int(screen.height / 1.1 - 4)
         ),
         Stars(screen, 200)
     ]
@@ -55,6 +60,7 @@ def outro_graphics(screen):
             break
     # Clear the screen after the intro
     screen.clear()
+
 
 
 
