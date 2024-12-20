@@ -7,7 +7,7 @@ def intro_graphics(screen):
     effects = [
         Cycle(
             screen,
-            FigletText("WELCOME TO HILLES HALL GAME", font='big'),
+            FigletText("WELCOME TO HILLES GAME", font='big'),
             int(screen.height / 2 - 4)
         ),
         Cycle(

@@ -66,7 +66,7 @@ def random_maze_game():
 
     # Player movement logic
     current_pos = start
-    directions = ['up', 'down', 'left', 'right', 'u', 'd', 'l', 'r']
+    directions = ['up', 'down', 'left', 'right', 'u', 'd', 'l', 'r', 'e', 'w', 'n', 's']
 
     while current_pos != end:
         move = input("Enter your move (u for up, d for down, r for right, l for left): ").lower()
@@ -78,13 +78,13 @@ def random_maze_game():
 
         # Calculate new position based on the move
         x, y = current_pos
-        if move in ['u', 'up'] and x > 0 and maze[x - 1][y] != '#':
+        if move in ['u', 'up', 'n'] and x > 0 and maze[x - 1][y] != '#':
             current_pos = (x - 1, y)
-        elif move in ['d', 'down'] and x < height - 1 and maze[x + 1][y] != '#':
+        elif move in ['d', 'down', 's'] and x < height - 1 and maze[x + 1][y] != '#':
             current_pos = (x + 1, y)
-        elif move in ['l', 'left'] and y > 0 and maze[x][y - 1] != '#':
+        elif move in ['l', 'left', 'w'] and y > 0 and maze[x][y - 1] != '#':
             current_pos = (x, y - 1)
-        elif move in ['r', 'right'] and y < width - 1 and maze[x][y + 1] != '#':
+        elif move in ['r', 'right', 'e'] and y < width - 1 and maze[x][y + 1] != '#':
             current_pos = (x, y + 1)
         else:
             print("You can't move in that direction, there's a wall.")

@@ -157,7 +157,7 @@ def maze_challenge():
 
     # Player movement logic
     current_pos = start
-    directions = ['up', 'down', 'left', 'right', 'u', 'd', 'l', 'r']
+    directions = ['up', 'down', 'left', 'right', 'u', 'd', 'l', 'r', 'e', 'w', 'n', 's']
 
     while current_pos != end:
         move = input("Enter your move (up, down, left, right): ").lower().strip()
@@ -169,13 +169,13 @@ def maze_challenge():
 
         # Calculate new position based on the move
         x, y = current_pos
-        if move in ["up", "u"] and x > 0 and maze[x - 1][y] != '#':
+        if move in ["up", "u", "n"] and x > 0 and maze[x - 1][y] != '#':
             current_pos = (x - 1, y)
-        elif move in ["down", "d"] and x < height - 1 and maze[x + 1][y] != '#':
+        elif move in ["down", "d", "s"] and x < height - 1 and maze[x + 1][y] != '#':
             current_pos = (x + 1, y)
-        elif move in ["left", "l"] and y > 0 and maze[x][y - 1] != '#':
+        elif move in ["left", "l", "w"] and y > 0 and maze[x][y - 1] != '#':
             current_pos = (x, y - 1)
-        elif move in ["right", "r"] and y < width - 1 and maze[x][y + 1] != '#':
+        elif move in ["right", "r", "e"] and y < width - 1 and maze[x][y + 1] != '#':
             current_pos = (x, y + 1)
         else:
             print("You can't move in that direction, there's a wall.")

@@ -60,16 +60,17 @@ def game_loop():
 
             currentdisplay = update_map(currentdisplay, current, visited)
             mapdisplays[current_map_index] = currentdisplay
-            print_map(currentdisplay)
-            print("Enter N for North, S for South, E for East, W for West")
-            print("Enter [help] for more instructions.")
 
             user_input = input("> ").strip().lower()
-
+            if user_input not in ["current", "help", "stats", "save", "quit"]:
+                print_map(currentdisplay)
+                print("Enter N for North, S for South, E for East, W for West")
+                print("Enter [help] for more instructions.")
             if user_input == "current":
                 print(current_place(p1))
             elif user_input == "help":
                 print("Enter [stats] to see your current stats")
+                print("Enter [map] to see the map")
                 print("Enter [current] to see your current position")
                 print("Enter [save] to save your game")
                 print("Enter [quit] to save and quit the game")
