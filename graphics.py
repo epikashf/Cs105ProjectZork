@@ -7,7 +7,7 @@ def intro_graphics(screen):
     effects = [
         Cycle(
             screen,
-            FigletText("WELCOME TO THE GAME!", font='big'),
+            FigletText("WELCOME TO HILLES HALL GAME", font='big'),
             int(screen.height / 2 - 4)
         ),
         Cycle(
@@ -39,7 +39,7 @@ def outro_graphics(screen):
         ),
         Cycle(
             screen,
-            FigletText("CONGRATULATIONS", font='small'),
+            FigletText("Congratulations you made it back to Bryn Mawr", font='small'),
             int(screen.height / 1.2 - 4)
         ),
         Stars(screen, 200)

@@ -1,18 +1,18 @@
 from mapdisplay import *
 from functions import *
-from stats import *
 from savefile import *
-# from graphics import intro_graphics, outro_graphics
-# import os
-# from asciimatics.screen import Screen
+from battle3 import final_battle
+from randommaze import random_maze_game
+from graphics import intro_graphics, outro_graphics
+import os
+from asciimatics.screen import Screen
 
-# Player starting position
 
 # game loop using these functions
 def game_loop():
 
-    # Screen.wrapper(intro_graphics)
-    # os.system('cls' if os.name == 'nt' else 'clear')
+    Screen.wrapper(intro_graphics)
+    os.system('cls' if os.name == 'nt' else 'clear')
 
     maps = [map_1, map_2, map_3] # List of maps
     mapdisplays = [map_1display, map_2display, map_3display]
@@ -61,12 +61,20 @@ def game_loop():
             currentdisplay = update_map(currentdisplay, current, visited)
             mapdisplays[current_map_index] = currentdisplay
             print_map(currentdisplay)
-
+            print("Enter N for North, S for South, E for East, W for West")
+            print("Enter [help] for more instructions.")
 
             user_input = input("> ").strip().lower()
 
             if user_input == "current":
                 print(current_place(p1))
+            elif user_input == "help":
+                print("Enter [stats] to see your current stats")
+                print("Enter [current] to see your current position")
+                print("Enter [save] to save your game")
+                print("Enter [quit] to save and quit the game")
+                print("Enter U or Up to go up, D or Down to go down, L or Left to go Left, R or Right to go Right")
+                print("Enter N or North to go up, S or South to go down, W or West to go Left, E or East to go Right")
             elif user_input in ["north", "n", "up", "u"]:
                 go_north(currentmap, p1, visited)
             elif user_input in ["south", "s", "down", "d"]:
@@ -110,6 +118,9 @@ def game_loop():
                     print("Health +10")
                     p1.modify_health(10)
                     continue
+                if randommazemap1(p1):
+                    random_maze_game()
+                    continue
 
                 if linux_cat_game(p1):
                     battlemap1(p1.health, focal_fossa)
@@ -117,29 +128,36 @@ def game_loop():
 
             if currentmap == map_2:
 
+                if randommazemap2(p1):
+                    random_maze_game()
+                    continue
+
                 if linux_cat_gamemap2(p1):
-                    focal_fossa_battlemap2(p1.health)
+                    focal_fossa_battlemap2(p1)
                     continue
 
             if currentmap == map_3:
-                pass
+
+                if map_3_battlegame(p1):
+                    final_battle()
+                    continue
 
 
             if currentmap == map_1 and goal_reachedmap1(p1):
-                print("Map 1 completed! Moving to Map 2.")
+                print("You successfully left Lab H204! You're now in Hilles Hall.")
                 p1.reset_position()  # Reset position for a new game
                 reset_visited(visited)
                 current_map_index += 1
                 break
             if currentmap == map_2 and goal_reachedmap2(p1):
-                print("Map 2 completed! Moving to Map 3.")
+                print("You successfully left Lab H204! You're now trying to reach the Bus Stop to leave to Bryn Mawr.")
                 p1.reset_position()  # Reset position for a new game
                 reset_visited(visited)
                 current_map_index += 1
                 break
             if currentmap == map_3 and goal_reachedmap3(p1):
-                # Screen.wrapper(outro_graphics)
-                # os.system('cls' if os.name == 'nt' else 'clear')
+                Screen.wrapper(outro_graphics)
+                os.system('cls' if os.name == 'nt' else 'clear')
                 exit()
 
 

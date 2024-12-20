@@ -1,6 +1,7 @@
 import random
 
-def generate_random_maze(width, height):
+
+def generate_random_maze(width, height, allowed_coordinates):
     # Create an empty grid with walls
     maze = [['#' for _ in range(width)] for _ in range(height)]
 
@@ -12,13 +13,16 @@ def generate_random_maze(width, height):
     end = (height - 2, width - 2)
     maze[end[0]][end[1]] = 'E'
 
-    # Randomly remove walls to create paths, but ensure walls block the middle
+    # Convert allowed_coordinates to a set for fast lookup
+    allowed_set = set(allowed_coordinates)
+
+    # Randomly carve paths within allowed coordinates
     def carve_paths(x, y):
         directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # right, down, left, up
         random.shuffle(directions)
         for dx, dy in directions:
             nx, ny = x + dx * 2, y + dy * 2
-            if 0 < nx < height - 1 and 0 < ny < width - 1 and maze[nx][ny] == '#':
+            if (nx, ny) in allowed_set and maze[nx][ny] == '#':
                 maze[nx][ny] = ' '
                 maze[x + dx][y + dy] = ' '
                 carve_paths(nx, ny)
@@ -26,14 +30,8 @@ def generate_random_maze(width, height):
     # Carve paths starting from the start point
     carve_paths(start[0], start[1])
 
-    # Ensure the end point is accessible by carving paths towards it
+    # Ensure the end point is accessible
     carve_paths(end[0], end[1])
-
-    # Add some random walls in the middle to make it challenging
-    for i in range(3, height - 3):
-        for j in range(3, width - 3):
-            if maze[i][j] == ' ' and random.random() < 0.2:
-                maze[i][j] = '#'
 
     return maze, start, end
 
@@ -52,17 +50,26 @@ def random_maze_game():
     # Maze size is 50x20
     width = 60
     height = 20
-    maze, start, end = generate_random_maze(width, height)
+
+    # Define allowed coordinates where the maze can be carved
+    allowed_coordinates = [
+        (x, y)
+        for x in range(1, height - 1, 2)
+        for y in range(1, width - 1, 2)
+    ]
+
+    # Generate the maze with specific allowed coordinates
+    maze, start, end = generate_random_maze(width, height, allowed_coordinates)
 
     # Print the maze
     print_maze(maze)
 
     # Player movement logic
     current_pos = start
-    directions = ['up', 'down', 'left', 'right']
+    directions = ['up', 'down', 'left', 'right', 'u', 'd', 'l', 'r']
 
     while current_pos != end:
-        move = input("Enter your move (up, down, left, right): ").lower()
+        move = input("Enter your move (u for up, d for down, r for right, l for left): ").lower()
 
         # Check if the move is valid
         if move not in directions:
@@ -71,13 +78,13 @@ def random_maze_game():
 
         # Calculate new position based on the move
         x, y = current_pos
-        if move == 'up' and x > 0 and maze[x - 1][y] != '#':
+        if move in ['u', 'up'] and x > 0 and maze[x - 1][y] != '#':
             current_pos = (x - 1, y)
-        elif move == 'down' and x < height - 1 and maze[x + 1][y] != '#':
+        elif move in ['d', 'down'] and x < height - 1 and maze[x + 1][y] != '#':
             current_pos = (x + 1, y)
-        elif move == 'left' and y > 0 and maze[x][y - 1] != '#':
+        elif move in ['l', 'left'] and y > 0 and maze[x][y - 1] != '#':
             current_pos = (x, y - 1)
-        elif move == 'right' and y < width - 1 and maze[x][y + 1] != '#':
+        elif move in ['r', 'right'] and y < width - 1 and maze[x][y + 1] != '#':
             current_pos = (x, y + 1)
         else:
             print("You can't move in that direction, there's a wall.")
@@ -91,6 +98,7 @@ def random_maze_game():
 
     print("Congratulations! You've reached the exit!")
     return True  # Add return statement to indicate the stage was completed
+
 
 # Run the maze game
 if __name__ == "__main__":

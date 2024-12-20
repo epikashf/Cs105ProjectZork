@@ -1,23 +1,14 @@
 import random
 
-# Data for Stage 1
-logic_gate_data = [
-    {"inputs": ("1010", "1100"), "output": "1000", "gate": "AND"},
-    {"inputs": ("1010", "1100"), "output": "1110", "gate": "OR"},
-    {"inputs": ("1010",), "output": "0101", "gate": "NOT"}
-]
-
-cs_words = [
-    "algorithm", "binary", "function",
-    "variable", "python", "array",
-    "loop", "class", "object", "network"
-]
-
-# Stage 1: Logical Gates Challenge
 def logic_gates_challenge():
     print("\nStage 1: Logical Gates Challenge")
     print("The enemy is trying to overwhelm you with binary logic! Identify the correct logic gate.\n")
 
+    logic_gate_data = [
+        {"inputs": ("1010", "1100"), "output": "1000", "gate": "AND"},
+        {"inputs": ("1010", "1100"), "output": "1110", "gate": "OR"},
+        {"inputs": ("1010",), "output": "0101", "gate": "NOT"}
+    ]
     random.shuffle(logic_gate_data)
     for data in logic_gate_data:
         inputs = " , ".join(data["inputs"]) if len(data["inputs"]) > 1 else data["inputs"][0]
@@ -77,6 +68,11 @@ def jumbled_cipher_challenge():
     print("\nStage 3: Jumbled Cipher Challenge")
     print("The enemy is hiding the key in scrambled words! Unscramble them to finish the fight.\n")
 
+    cs_words = [
+        "algorithm", "binary", "function",
+        "variable", "python", "array",
+        "loop", "class", "object", "network"
+    ]
     selected_words = random.sample(cs_words, 5)
     scrambled_dict = {scramble_word(word): word for word in selected_words}
 
@@ -161,10 +157,10 @@ def maze_challenge():
 
     # Player movement logic
     current_pos = start
-    directions = ['up', 'down', 'left', 'right']
+    directions = ['up', 'down', 'left', 'right', 'u', 'd', 'l', 'r']
 
     while current_pos != end:
-        move = input("Enter your move (up, down, left, right): ").lower()
+        move = input("Enter your move (up, down, left, right): ").lower().strip()
 
         # Check if the move is valid
         if move not in directions:

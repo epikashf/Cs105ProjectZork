@@ -10,6 +10,9 @@ onecard_found = False
 keys_found = False
 focaldead = False
 focaldeadmap2 = False
+battle3 = False
+randommaze1 = False
+randommaze2 = False
 
 
 
@@ -17,6 +20,7 @@ focaldeadmap2 = False
 def print_map(map):
     for row in map:
         print(row)
+
 def update_map(map, current, visited):
 
     # Create a new map display with updates for visited and current positions
@@ -55,7 +59,7 @@ def goal_reachedmap2(player) -> bool:
 
 
 def goal_reachedmap3(player) -> bool:
-    goal_x, goal_y = 4, 10
+    goal_x, goal_y = 8, 10
     return (player.x, player.y) == (goal_x, goal_y)
 
 
@@ -86,6 +90,24 @@ def hersheys(player) -> bool:
         return True
     else:
         return False
+
+def randommazemap1(player) -> bool:
+    reach_x, reach_y = 6, 6
+    global randommaze1
+    if (player.x, player.y) == (reach_x, reach_y) and not randommaze1:
+        randommaze1 = True
+        return True
+    else:
+        return False
+def randommazemap2(player) -> bool:
+    reach_x, reach_y = 4, 8
+    global randommaze2
+    if (player.x, player.y) == (reach_x, reach_y) and not randommaze2:
+        randommaze2 = True
+        return True
+    else:
+        return False
+
 
 
 def reset_visited(visited):
@@ -158,6 +180,16 @@ def linux_cat_gamemap2(player):
     global focaldeadmap2
     if (player.x, player.y) == (reach_x, reach_y) and not focaldeadmap2:
         focaldeadmap2 = True
+        return True
+    else:
+        return False
+
+
+def map_3_battlegame(player):
+    reach_x, reach_y = 8, 10
+    global battle3
+    if (player.x, player.y) == (reach_x, reach_y) and not battle3:
+        battle3 = True
         return True
     else:
         return False
@@ -340,11 +372,11 @@ def battlemap1(player_health, focal_fossa):
 
 import random
 
-def focal_fossa_battlemap2(player_health):
+def focal_fossa_battlemap2(player):
     print("\n--- Focal Fossa Battle ---")
     print("Focal Fossa challenges you again! Strategically counter its attacks.")
-    print("Survive by making correct choices. Each wrong or invalid choice costs energy!")
-    print("Successfully counter 5 attacks to win, or lose if energy drops to 0 :(\n")
+    print("Survive by making correct choices. Each wrong or invalid choice costs health!")
+    print("Successfully counter 5 attacks to win, or lose if health drops to 0 :(\n")
 
     # Player resources
     tools = {"Debugger": 2, "Firewall": 2, "Encryption Key": 2}
@@ -363,8 +395,8 @@ def focal_fossa_battlemap2(player_health):
     attack_counts = {attack: 0 for attack in attack_tool_mapping.keys()}
     max_attacks_per_type = 1  # Limit each attack type to appear no more than twice
 
-    # Keep playing until energy is 0 or all 5 attacks are countered
-    while player_health > 0 and successful_counters < 5:
+    # Keep playing until health is 0 or all 5 attacks are countered
+    while player.health > 0 and successful_counters < 5:
         # Randomly select an attack, ensuring it hasn't been used more than twice
         available_attacks = [attack for attack, count in attack_counts.items() if count < max_attacks_per_type]
         if not available_attacks:
@@ -388,33 +420,31 @@ def focal_fossa_battlemap2(player_health):
         # Handle invalid input or depleted tools
         if selected_tool is None:
             print("Invalid choice! Please choose a valid tool.")
-            player_health -= 20
+            player.health -= 20
         elif tools[selected_tool] == 0:
             print(f"No uses left for {selected_tool}!")
-            player_health -= 20
+            player.health -= 20
         elif selected_tool == attack_tool_mapping[attack]:
             print(f"Well done! The {selected_tool} counters the {attack}!")
             tools[selected_tool] -= 1
             successful_counters += 1
         else:
             print(f"Wrong choice! The {attack} damages you!")
-            player_health -= 20
+            player.health -= 20
 
-        print(f"\n--- Current Status ---\nEnergy: {player_health}\nTools: {tools}\n")
+        print(f"\n--- Current Status ---\nHealth: {player.health}\nTools: {tools}\n")
 
     # Determine game outcome
     if successful_counters == 5:
         print("Congratulations! You've successfully countered all of Focal Fossa's attacks and won!")
 
-    if player_health <= 0:
+    if player.health <= 0:
         print("You have died. Focal Fossa overwhelmed you. Game over!")
         restart = input("Press 'r' to restart: ")
         if restart.lower().strip() == 'r':
-            return focal_fossa_battlemap2(80)
+            return focal_fossa_battlemap2(player(health=80))
         else:
             print("You chose not to restart. Game over!")
             exit()
-
-
 
 
