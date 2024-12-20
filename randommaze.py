@@ -2,10 +2,8 @@ import random
 from collections import deque
 
 def generate_random_maze(width, height, allowed_coordinates):
-    # Create an empty grid with walls
     maze = [['#' for _ in range(width)] for _ in range(height)]
 
-    # Starting point is at top-left corner
     start = (1, 1)
     maze[start[0]][start[1]] = 'S'
 
@@ -23,10 +21,8 @@ def generate_random_maze(width, height, allowed_coordinates):
                 maze[x + dx][y + dy] = ' '
                 carve_paths(nx, ny)
 
-    # Carve paths starting from the start point
     carve_paths(start[0], start[1])
 
-    # Find all reachable cells from S using BFS
     def get_reachable_cells():
         visited = set()
         queue = deque([start])

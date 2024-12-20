@@ -53,12 +53,11 @@ def outro_graphics(screen):
     # Play the animation
     screen.play([Scene(effects, 200)], stop_on_resize=True, repeat=False)
 
-    # Wait for a key press after the animation
     while True:
         key = screen.get_key()
         if key:  # Proceed if any key is pressed
             break
-    # Clear the screen after the intro
+
     screen.clear()
 
 

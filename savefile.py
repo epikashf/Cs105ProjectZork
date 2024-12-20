@@ -19,7 +19,6 @@ def save_game(player, current_map_index, visited, filename="game_save.json"):
 
 
 
-# Loading the game state from a file (example with JSON)
 def load_game(filename="game_save.json"):
     try:
         with open(filename, 'r') as file:
