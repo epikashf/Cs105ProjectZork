@@ -100,6 +100,3 @@ def random_maze_game():
     return True  # Add return statement to indicate the stage was completed
 
 
-# Run the maze game
-if __name__ == "__main__":
-    random_maze_game()
