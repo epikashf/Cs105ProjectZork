@@ -47,6 +47,7 @@ def start_new_game():
     print("Welcome to Hilles Hall Game where you have Python for lunch and Java for Dinner")
     print("You have been programming all night upstairs and you've been locked up")
     print("You are looking for keys to get out of the Lab H204")
+    print("Enter N for North, S for South, E for East, W for West")
     return p1
 
 
