@@ -2,17 +2,17 @@ from mapdisplay import *
 from functions import *
 from stats import *
 from savefile import *
-from graphics import intro_graphics, outro_graphics
-import os
-from asciimatics.screen import Screen
+# from graphics import intro_graphics, outro_graphics
+# import os
+# from asciimatics.screen import Screen
 
 # Player starting position
 
 # game loop using these functions
 def game_loop():
 
-    Screen.wrapper(intro_graphics)
-    os.system('cls' if os.name == 'nt' else 'clear')
+    # Screen.wrapper(intro_graphics)
+    # os.system('cls' if os.name == 'nt' else 'clear')
 
     maps = [map_1, map_2, map_3] # List of maps
     mapdisplays = [map_1display, map_2display, map_3display]
@@ -138,8 +138,8 @@ def game_loop():
                 current_map_index += 1
                 break
             if currentmap == map_3 and goal_reachedmap3(p1):
-                Screen.wrapper(outro_graphics)
-                os.system('cls' if os.name == 'nt' else 'clear')
+                # Screen.wrapper(outro_graphics)
+                # os.system('cls' if os.name == 'nt' else 'clear')
                 exit()
 
 

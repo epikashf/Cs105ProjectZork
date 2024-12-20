@@ -244,30 +244,34 @@ def battlemap1(player_health, focal_fossa):
 
     # Weapon selection
     print("Choose which weapon you want to use to fight Focal Fossa.")
-    print("1. Keyboard - to bang it on its head")
-    print("2. Wire - to strangle Focal Fossa")
-    print("3. Monitor - to hit Focal Fossa")
+    print("1. Keyboard - bang it on its head")
+    print("2. Wire - strangle Focal Fossa")
+    print("3. Monitor - hit Focal Fossa")
 
-    weapon_choice = input("Choose your weapon (1, 2, or 3): ")
+    while True:
+        weapon_choice = input("Choose your weapon (1, 2, or 3): ")
 
-    if weapon_choice == "1":
-        weapon = Weapon("Keyboard", 10)
-    elif weapon_choice == "2":
-        weapon = Weapon("Wire", 15)
-    elif weapon_choice == "3":
-        weapon = Weapon("Monitor", 12)
-    else:
-        print("Invalid choice! Defaulting to Keyboard.")
-        weapon = Weapon("Keyboard", 10)
+        if weapon_choice == "1":
+            weapon = Weapon("Keyboard", 10)
+            break
+        elif weapon_choice == "2":
+            weapon = Weapon("Wire", 15)
+            break
+        elif weapon_choice == "3":
+            weapon = Weapon("Monitor", 12)
+            break
+        else:
+            print("Oops! you made a typo. Please try again with your weapon.\n")
 
-    print(f"Good choice! You chose the {weapon.name}. Now, let's start the battle!\n")
+    print(f"Solid choice! You chose the {weapon.name}. Now, let the battle begin!\n")
 
     while player_health > 0 and focal_fossa.is_alive():
         print(f"\nYour health: {player_health}")
         print(f"{focal_fossa.name}'s health: {focal_fossa.health}")
 
         # Prompt the player for their action
-        print("\nNow, choose a number to press according to the health decrease:")
+        print("\nNow, choose a number to press according to the health decrease \n(remember,you "
+              "have to drop Focal Fossa's health to exactly 0 no less! So pick wisely):")
         print("Press 1 for a decrease of 10 points.")
         print("Press 2 for a decrease of 20 points.")
         print("Press 3 for a decrease of 30 points.")
@@ -275,7 +279,7 @@ def battlemap1(player_health, focal_fossa):
         choice = input("Enter your choice (1, 2, or 3): ")
 
         if choice not in ["1", "2", "3"]:
-            print("Invalid choice! You lose 10 health for the wrong input.")
+            print("Oops! a typo, we we'll not let it go this time [Lost 10 points for wrong choice]")
             player_health -= 10
             continue
 
