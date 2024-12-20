@@ -62,10 +62,7 @@ def game_loop():
             mapdisplays[current_map_index] = currentdisplay
 
             user_input = input("> ").strip().lower()
-            if user_input not in ["current", "help", "stats", "save", "quit"]:
-                print_map(currentdisplay)
-                print("Enter N for North, S for South, E for East, W for West")
-                print("Enter [help] for more instructions.")
+
             if user_input == "current":
                 print(current_place(p1))
             elif user_input == "help":
@@ -102,6 +99,11 @@ def game_loop():
                 exit()
             else:
                 print("Invalid input! Try again.")
+
+            if user_input not in ["current", "help", "stats", "save", "quit"]:
+                print_map(currentdisplay)
+                print("Enter N for North, S for South, E for East, W for West")
+                print("Enter [help] for more instructions.")
 
             if currentmap == map_1:
                 if hilleskey(p1):

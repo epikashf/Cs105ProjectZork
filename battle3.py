@@ -147,8 +147,8 @@ def maze_challenge():
     print("Stage 4: Maze Challenge")
     print("You’ve entered a dark maze! Navigate from S to E to escape.")
 
-    # Maze size is 50x20
-    width = 50
+    # Maze size is 20x20
+    width = 20
     height = 20
     maze, start, end = generate_maze(width, height)
 
@@ -221,7 +221,9 @@ def final_battle():
                 return
 
 
+#
+# # Run the final battle
+# if __name__ == "__main__":
+#     final_battle()
 
-# Run the final battle
-if __name__ == "__main__":
-    final_battle()
+maze_challenge()

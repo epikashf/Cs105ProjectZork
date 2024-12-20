@@ -10,7 +10,7 @@ def generate_random_maze(width, height, allowed_coordinates):
     maze[start[0]][start[1]] = 'S'
 
     # End point is at bottom-right corner (on the opposite side)
-    end = (height - 2, width - 2)
+    end = (height - 3, width - 2)
     maze[end[0]][end[1]] = 'E'
 
     # Convert allowed_coordinates to a set for fast lookup
@@ -48,8 +48,8 @@ def random_maze_game():
     print("You’ve entered a dark maze! Navigate from S to E to escape.")
 
     # Maze size is 50x20
-    width = 60
-    height = 20
+    width = 20
+    height = 15
 
     # Define allowed coordinates where the maze can be carved
     allowed_coordinates = [
